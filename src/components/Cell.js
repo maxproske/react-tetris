@@ -14,9 +14,5 @@ const StyledCell = styled.div`
 `
 
 export const Cell = ({ type }) => {
-  return (
-    <StyledCell type={'L'} color={TETROMINOS['L'].color}>
-      cell
-    </StyledCell>
-  )
+  return <StyledCell type={type} color={TETROMINOS[type].color} />
 }
