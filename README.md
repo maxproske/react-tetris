@@ -2,6 +2,7 @@
 
 Creating a simple game in React without canvas.
 
-https://youtu.be/ZGOaCxX8HIU
+- [**How to Build Tetris in React**](https://youtu.be/ZGOaCxX8HIU)
+- [**Making setInterval Declarative with React Hooks**](https://overreacted.io/making-setinterval-declarative-with-react-hooks/)
 
 ![Screenshot](./screenshot.png)
