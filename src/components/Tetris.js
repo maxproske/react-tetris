@@ -11,7 +11,7 @@ import { usePlayer } from '../hooks/usePlayer'
 import { useStage } from '../hooks/useStage'
 
 import bgImage from '../img/bg.png'
-import { createStage } from '../gameHelpers'
+import { createStage, checkCollision } from '../gameHelpers'
 
 const StyledTetrisWrapper = styled.div`
   width: 100vw;
@@ -40,26 +40,40 @@ export const Tetris = () => {
   const [dropTime, setDropTime] = useState(null)
   const [gameOver, setGameOver] = useState(false)
 
-  const [player, updatePlayerPos, resetPlayer] = usePlayer()
-  const [stage, setStage] = useStage(player)
+  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer()
+  const [stage, setStage] = useStage(player, resetPlayer, playerRotate)
 
   console.log('re-render')
 
   const movePlayer = (dir) => {
-    updatePlayerPos({ x: dir, y: 0 })
+    if (!checkCollision(player, stage, { x: dir, y: 0 })) {
+      updatePlayerPos({ x: dir, y: 0 })
+    }
   }
 
   const startGame = () => {
     // Reset everything
     setStage(createStage())
     resetPlayer()
+    setGameOver(false)
   }
 
   const drop = () => {
-    updatePlayerPos({ x: 0, y: 1, collided: false })
+    if (!checkCollision(player, stage, { x: 0, y: 1 })) {
+      updatePlayerPos({ x: 0, y: 1, collided: false })
+    } else {
+      // Game over!
+      if (player.pos.y < 1) {
+        console.log('GAME OVER!!!')
+        setGameOver(true)
+        setDropTime(null)
+      }
+      updatePlayerPos({ x: 0, y: 0, collided: true })
+    }
   }
 
   const dropPlayer = () => {
+    setDropTime(null)
     drop()
   }
 
@@ -79,6 +93,10 @@ export const Tetris = () => {
       // Down
       else if (keyCode === 40) {
         dropPlayer()
+      }
+      // Up
+      else if (keyCode === 38) {
+        playerRotate(stage, 1)
       }
     }
   }

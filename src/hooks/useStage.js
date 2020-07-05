@@ -26,12 +26,24 @@ export const useStage = (player, resetPlayer) => {
         })
       })
 
+      console.log('collided', player.collided)
+
+      if (player.collided) {
+        resetPlayer()
+      }
+
       return newStage
     }
 
     // Will infinite loop unless we invoke useCallback
     setStage((prev) => updateStage(prev))
-  }, [player])
+  }, [
+    player.collided,
+    player.pos.x,
+    player.pos.y,
+    player.tetromino,
+    resetPlayer,
+  ])
 
   return [stage, setStage]
 }
