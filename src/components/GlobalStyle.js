@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import PixelFont from '../fonts/Pixel.woff'
 
 export const GlobalStyle = createGlobalStyle`
 body {
@@ -7,6 +8,6 @@ body {
 
 @font-face {
     font-family: 'Pixel';
-    src: url('fonts/Pixel-LCD-7.woff') format('woff')
+    src: url(${PixelFont}) format('woff');
 }
 `

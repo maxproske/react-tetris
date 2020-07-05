@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styled from 'styled-components'
 
 import { TETROMINOS } from '../tetrominos'
@@ -13,6 +13,7 @@ const StyledCell = styled.div`
   border-left-color: rgba(${({ color }) => color}, 0.3);
 `
 
-export const Cell = ({ type }) => {
+export const Cell = memo(({ type }) => {
+  console.log('asdf')
   return <StyledCell type={type} color={TETROMINOS[type].color} />
-}
+})
