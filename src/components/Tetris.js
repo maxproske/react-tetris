@@ -7,6 +7,7 @@ import { Display } from './Display'
 import { StartButton } from './StartButton'
 
 // Hooks
+import { useInterval } from '../hooks/useInterval'
 import { usePlayer } from '../hooks/usePlayer'
 import { useStage } from '../hooks/useStage'
 
@@ -54,6 +55,7 @@ export const Tetris = () => {
   const startGame = () => {
     // Reset everything
     setStage(createStage())
+    setDropTime(1000) // 1 second
     resetPlayer()
     setGameOver(false)
   }
@@ -69,6 +71,15 @@ export const Tetris = () => {
         setDropTime(null)
       }
       updatePlayerPos({ x: 0, y: 0, collided: true })
+    }
+  }
+
+  const keyUp = ({ keyCode }) => {
+    if (!gameOver) {
+      // Down
+      if (keyCode === 40) {
+        setDropTime(1000)
+      }
     }
   }
 
@@ -101,9 +112,18 @@ export const Tetris = () => {
     }
   }
 
+  useInterval(() => {
+    drop()
+  }, dropTime)
+
   // Note: Without role="button", you would have to click the stage for inputs to register
   return (
-    <StyledTetrisWrapper role="button" tabIndex="0" onKeyDown={(e) => move(e)}>
+    <StyledTetrisWrapper
+      role="button"
+      tabIndex="0"
+      onKeyDown={(e) => move(e)}
+      onKeyUp={(e) => keyUp(e)}
+    >
       <StyledTetris>
         <Stage stage={stage} />
         <aside>
